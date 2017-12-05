@@ -5,7 +5,7 @@
 
 `go-fill-struct` is package for fill golang struct from emacs. It is simple wrapper around [`fillstruct`](https://github.com/davidrjenni/reftools/tree/master/cmd/fillstruct).
 
-For use this packages you should install `fillstruct' first:
+For use this packages you should install `fillstruct` first:
 
 ``` shell
 $ go get -u github.com/davidrjenni/reftools/cmd/fillstruct
