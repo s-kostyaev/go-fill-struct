@@ -54,9 +54,10 @@
                                 (json-key-type 'string)
                                 (json (json-read-from-string
                                        (buffer-substring-no-properties (point-min) (point-max))))
-                                (begin (+ (gethash "start" json) 1))
-                                (end (+ (gethash "end" json) 1))
-                                (content (gethash "code" json)))
+                                (json-data (or (car-safe json) json))
+                                (begin (+ (gethash "start" json-data) 1))
+                                (end (+ (gethash "end" json-data) 1))
+                                (content (gethash "code" json-data)))
                            (with-current-buffer go-fill-struct--buf
                              (delete-region begin end)
                              (goto-char begin)
