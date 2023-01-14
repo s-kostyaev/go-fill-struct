@@ -63,7 +63,8 @@
                              (goto-char begin)
                              (insert content)
                              (goto-char begin)
-                             (goto-char (line-end-position)))))
+                             (goto-char (line-end-position))
+			     (save-buffer))))
                        (kill-buffer)))))
     (set-process-sentinel proc sentinel)))
 
