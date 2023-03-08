@@ -4,6 +4,8 @@
 
 ;; Author:  Sergey Kostyaev <feo.me@ya.ru>
 ;; Keywords: tools
+;; Package-Version: 20171225.331
+;; Package-Commit: a613d0b378473eef39e8fd5724abe790aea84321
 
 ;; Version:  0.1.0
 ;; URL: https://github.com/s-kostyaev/go-fill-struct
@@ -44,7 +46,7 @@
           (format
            "fillstruct -file %s -offset %s"
            (shell-quote-argument (buffer-file-name))
-           (- (point) 1)))
+           (- (position-bytes (point)) 1)))
          (proc (start-process-shell-command "fillstruct" "*fillstruct*" cmd))
          (sentinel (lambda (_proc _state)
                      (with-current-buffer "*fillstruct*"
@@ -55,15 +57,19 @@
                                 (json (json-read-from-string
                                        (buffer-substring-no-properties (point-min) (point-max))))
                                 (json-data (or (car-safe json) json))
-                                (begin (+ (gethash "start" json-data) 1))
-                                (end (+ (gethash "end" json-data) 1))
+                                (begin-byte (+ (gethash "start" json-data) 1))
+                                (end-byte (+ (gethash "end" json-data) 1))
                                 (content (gethash "code" json-data)))
                            (with-current-buffer go-fill-struct--buf
-                             (delete-region begin end)
-                             (goto-char begin)
-                             (insert content)
-                             (goto-char begin)
-                             (goto-char (line-end-position)))))
+			     (let* ((begin (byte-to-position begin-byte))
+				    (end (byte-to-position end-byte)))
+			       (message "%s" json-data)
+			       (message "%s" begin)
+                               (delete-region begin end)
+                               (goto-char begin)
+                               (insert content)
+                               (goto-char begin)
+                               (goto-char (line-end-position))))))
                        (kill-buffer)))))
     (set-process-sentinel proc sentinel)))
 
