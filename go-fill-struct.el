@@ -63,8 +63,6 @@
                            (with-current-buffer go-fill-struct--buf
 			     (let* ((begin (byte-to-position begin-byte))
 				    (end (byte-to-position end-byte)))
-			       (message "%s" json-data)
-			       (message "%s" begin)
                                (delete-region begin end)
                                (goto-char begin)
                                (insert content)
